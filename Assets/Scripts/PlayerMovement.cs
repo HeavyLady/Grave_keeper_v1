@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class PlayerMovement : MonoBehaviour
     private float _dashTimer;
     private Vector3 _dashingVector;
     //
+
+    // Rotation
+    [SerializeField] private float _rotationSpeed;
+    //
+
 
     private enum PlayerMoveState
     {   
@@ -43,6 +49,11 @@ public class PlayerMovement : MonoBehaviour
         PlayerInput.OnDashPressed += PlayerInput_OnDashPressed;
     }
 
+    private void OnDisable()
+    {
+        PlayerInput.OnDashPressed -= PlayerInput_OnDashPressed;
+    }
+
     private void PlayerInput_OnDashPressed()
     {   
         if (_dashCooldownTimer > 0) { return; }
@@ -51,9 +62,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_dashCooldownTimer);
         CalculateDashCooldown();
-        if (_currentMoveState != PlayerMoveState.Dashing) Move();
+        if (_currentMoveState != PlayerMoveState.Dashing) {
+            Move();
+            Rotate();
+        }
+
         if (_currentMoveState == PlayerMoveState.Dashing) Dashing();
     }
 
@@ -75,6 +89,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetPosition = _previousDirection * _moveSpeed * Time.deltaTime;
 
         CharacterController.Move(targetPosition * _stopSmoth.Evaluate(easeTimer));
+    }
+
+    private void Rotate()
+    {
+        transform.forward = Vector3.Slerp(transform.forward, _previousDirection, _rotationSpeed * Time.deltaTime);
     }
 
     private void DashSetup()
@@ -128,7 +147,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_dashTimer <= 0)
         {
-            Debug.Log(_dashTimer);
             _dashTimer = 0;
             return;
         } else

@@ -7,6 +7,9 @@ public class PlayerInput : MonoBehaviour
     public static PlayerInput Instance { get; private set;} 
     private ControlMaps _controls;
     public event Action OnDashPressed;
+    public event Action OnMainAttackPressed;
+    public event Action OnSecondaryAttackPressed;
+    public event Action OnEscapeAttackPressed;
 
     private void Awake()
     {
@@ -14,8 +17,9 @@ public class PlayerInput : MonoBehaviour
         _controls = new ControlMaps();
         _controls.Player.Enable();
         _controls.Player.Dash.performed += Dash_performed;
-        //_controls.Player.InteractAlternative.performed += InteractAlternative_performed;
-        //_controls.Player.Pause.performed += Pause_performed;
+        _controls.Player.AttackMain.performed += AttackMain_performed; ;
+        _controls.Player.AttackSecondary.performed += AttackSecondary_performed; ;
+        _controls.Player.AttackEscape.performed += AttackEscape_performed;
     }
 
 
@@ -23,9 +27,23 @@ public class PlayerInput : MonoBehaviour
     {
         PlayerInput.Instance = null;
         _controls.Player.Dash.performed -= Dash_performed;
-        //_controls.Player.Interact.performed -= OnInteract;
-        //_controls.Player.InteractAlternative.performed -= InteractAlternative_performed;
-        //_controls.Player.Pause.performed -= Pause_performed;
+        _controls.Player.AttackMain.performed -= AttackMain_performed; ;
+        _controls.Player.AttackSecondary.performed -= AttackSecondary_performed; ;
+        _controls.Player.AttackEscape.performed -= AttackEscape_performed;
+    }
+    private void AttackEscape_performed(InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void AttackSecondary_performed(InputAction.CallbackContext obj)
+    {
+        
+    }
+
+    private void AttackMain_performed(InputAction.CallbackContext obj)
+    {
+        OnMainAttackPressed?.Invoke();
     }
 
 

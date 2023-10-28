@@ -44,6 +44,33 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackMain"",
+                    ""type"": ""Button"",
+                    ""id"": ""d04ea0a1-c68a-464b-9180-e5dae0f13bbe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackSecondary"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd0bea14-f140-466c-8fe6-e8c9a3d35c4b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AttackEscape"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1ed41fe-a807-48e5-b9cd-0baa84056d5e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +139,39 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a14d33f0-6416-4031-a99d-01433aa25f6d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackMain"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""95f082fc-5c58-4ce2-aaff-80d00d1046fe"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackSecondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aaa77b39-8cbb-4128-bde5-81578163963b"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""AttackEscape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +182,9 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_AttackMain = m_Player.FindAction("AttackMain", throwIfNotFound: true);
+        m_Player_AttackSecondary = m_Player.FindAction("AttackSecondary", throwIfNotFound: true);
+        m_Player_AttackEscape = m_Player.FindAction("AttackEscape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +248,18 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_AttackMain;
+    private readonly InputAction m_Player_AttackSecondary;
+    private readonly InputAction m_Player_AttackEscape;
     public struct PlayerActions
     {
         private @ControlMaps m_Wrapper;
         public PlayerActions(@ControlMaps wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @AttackMain => m_Wrapper.m_Player_AttackMain;
+        public InputAction @AttackSecondary => m_Wrapper.m_Player_AttackSecondary;
+        public InputAction @AttackEscape => m_Wrapper.m_Player_AttackEscape;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +275,15 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @AttackMain.started += instance.OnAttackMain;
+            @AttackMain.performed += instance.OnAttackMain;
+            @AttackMain.canceled += instance.OnAttackMain;
+            @AttackSecondary.started += instance.OnAttackSecondary;
+            @AttackSecondary.performed += instance.OnAttackSecondary;
+            @AttackSecondary.canceled += instance.OnAttackSecondary;
+            @AttackEscape.started += instance.OnAttackEscape;
+            @AttackEscape.performed += instance.OnAttackEscape;
+            @AttackEscape.canceled += instance.OnAttackEscape;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -216,6 +294,15 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @AttackMain.started -= instance.OnAttackMain;
+            @AttackMain.performed -= instance.OnAttackMain;
+            @AttackMain.canceled -= instance.OnAttackMain;
+            @AttackSecondary.started -= instance.OnAttackSecondary;
+            @AttackSecondary.performed -= instance.OnAttackSecondary;
+            @AttackSecondary.canceled -= instance.OnAttackSecondary;
+            @AttackEscape.started -= instance.OnAttackEscape;
+            @AttackEscape.performed -= instance.OnAttackEscape;
+            @AttackEscape.canceled -= instance.OnAttackEscape;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -237,5 +324,8 @@ public partial class @ControlMaps: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnAttackMain(InputAction.CallbackContext context);
+        void OnAttackSecondary(InputAction.CallbackContext context);
+        void OnAttackEscape(InputAction.CallbackContext context);
     }
 }
