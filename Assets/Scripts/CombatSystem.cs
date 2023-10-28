@@ -1,14 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject AttackColliderGameObject;
+    [SerializeField] protected GameObject AttackColliderGameObject;
     [SerializeField] protected float _hitTime;
     protected AttackCollider AttackCollider;
     protected Camera Cam;
     protected PlayerInput PlayerInput;
+    protected PlayerMovement PlayerMovement;
+
+    public event Action<Vector3> OnAttackExecute;
 
 
     protected const string ENEMY_TAG = "Enemy";
@@ -18,6 +22,7 @@ public class CombatSystem : MonoBehaviour
     {
         Cam = Camera.main;
         PlayerInput = GetComponent<PlayerInput>(); 
+        PlayerMovement = GetComponent<PlayerMovement>();
     }
 
     private void OnEnable()
@@ -27,8 +32,8 @@ public class CombatSystem : MonoBehaviour
 
 
     protected virtual void ActivateAttack(){}
-    public virtual void ExecuteSecondaryAttack(){}
-    public virtual void ExecuteEscapeAttack(){}
+    protected virtual void ActivateSecondaryAttack(){}
+    protected virtual void ActivateEscapeAttack(){}
 
     protected Vector3 GetMousePosition()
     {
@@ -43,8 +48,10 @@ public class CombatSystem : MonoBehaviour
     }
 
     protected void ActivateAttackCollider()
-    {
+    {   
+
         AttackColliderGameObject.SetActive(true);
+       
     }
     protected void DeactivateAttackCollider()
     {

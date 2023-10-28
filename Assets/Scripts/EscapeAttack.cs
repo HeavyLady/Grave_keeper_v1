@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainAttack : CombatSystem
+public class EscapeAttack : CombatSystem
 {
     [SerializeField] private float _damage;
     private bool _isAttackPerfoming = false;
     private float _attackTimer = 0;
 
 
-    
-
-
     private void Start()
     {
-        PlayerInput.OnMainAttackPressed += PlayerInput_OnMainAttackPressed;
+        PlayerInput.OnEscapeAttackPressed += PlayerInput_OnEscapeAttackPressed;        
         AttackCollider.OnAttackCollided += AttackCollider_OnAttackCollided;
 
 
@@ -24,7 +21,7 @@ public class MainAttack : CombatSystem
 
     private void OnDisable()
     {
-        PlayerInput.OnMainAttackPressed -= PlayerInput_OnMainAttackPressed;
+        PlayerInput.OnEscapeAttackPressed -= PlayerInput_OnEscapeAttackPressed;
         AttackCollider.OnAttackCollided -= AttackCollider_OnAttackCollided;
     }
 
@@ -35,7 +32,8 @@ public class MainAttack : CombatSystem
             if (_attackTimer > 0)
             {
                 _attackTimer -= Time.deltaTime;
-            } else
+            }
+            else
             {
                 _isAttackPerfoming = false;
                 DeactivateAttackCollider();
@@ -43,26 +41,24 @@ public class MainAttack : CombatSystem
         }
     }
 
-    private void PlayerInput_OnMainAttackPressed()
+    private void PlayerInput_OnEscapeAttackPressed()
     {
-        ActivateAttack();
+        ActivateEscapeAttack();
     }
     private void AttackCollider_OnAttackCollided(Collider collider)
     {
-        if (collider.CompareTag(ENEMY_TAG)) {
+        if (collider.CompareTag(ENEMY_TAG))
+        {
             ExexuteAttack(collider.gameObject);
         }
     }
 
-    protected override void ActivateAttack()
+    protected override void ActivateEscapeAttack()
     {
-        
         _isAttackPerfoming = true;
         _attackTimer = _hitTime;
         ActivateAttackCollider();
         PlayerMovement.RactOnAttack(GetMousePosition(), _hitTime);
-
-
     }
 
     private void ExexuteAttack(GameObject target)

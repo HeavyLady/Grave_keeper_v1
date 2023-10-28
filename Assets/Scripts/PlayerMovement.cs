@@ -23,6 +23,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotationSpeed;
     //
 
+    //
+    private float _attackTime = 0;
+    private float _attackTimer = 0;
+    //
+
 
     private enum PlayerMoveState
     {   
@@ -65,7 +70,14 @@ public class PlayerMovement : MonoBehaviour
         CalculateDashCooldown();
         if (_currentMoveState != PlayerMoveState.Dashing) {
             Move();
-            Rotate();
+
+            if (_attackTimer > 0 )
+            {
+                _attackTimer -= Time.deltaTime;
+            } else
+            {
+                Rotate();
+            }
         }
 
         if (_currentMoveState == PlayerMoveState.Dashing) Dashing();
@@ -94,6 +106,24 @@ public class PlayerMovement : MonoBehaviour
     private void Rotate()
     {
         transform.forward = Vector3.Slerp(transform.forward, _previousDirection, _rotationSpeed * Time.deltaTime);
+    }    
+    private void RotateToMousePosition(Vector3 mousePosition)
+    {
+        
+        float angle = AngleBetweenPoints(transform.position, mousePosition);
+        Vector3 targetPostition = new Vector3(mousePosition.x,
+                                       this.transform.position.y,
+                                       mousePosition.z);
+        transform.LookAt(targetPostition);
+        //transform.rotation = Quaternion.Euler(new Vector3(0f, angle, 0f));
+    
+
+    //transform.forward = Vector3.Slerp(transform.forward, mousePosition.normalized, 1);
+       
+    }
+    float AngleBetweenPoints(Vector2 a, Vector2 b)
+    {
+        return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
     }
 
     private void DashSetup()
@@ -153,5 +183,13 @@ public class PlayerMovement : MonoBehaviour
         {
             _dashTimer -= Time.deltaTime;
         }
+    }
+
+    public void RactOnAttack(Vector3 mousePosition, float attackTime)
+    {
+        _attackTime = _attackTimer = attackTime;
+        RotateToMousePosition(mousePosition);
+
+
     }
 }

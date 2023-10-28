@@ -33,12 +33,12 @@ public class PlayerInput : MonoBehaviour
     }
     private void AttackEscape_performed(InputAction.CallbackContext obj)
     {
-        
+        OnEscapeAttackPressed?.Invoke();
     }
 
     private void AttackSecondary_performed(InputAction.CallbackContext obj)
     {
-        
+        OnSecondaryAttackPressed?.Invoke();
     }
 
     private void AttackMain_performed(InputAction.CallbackContext obj)
