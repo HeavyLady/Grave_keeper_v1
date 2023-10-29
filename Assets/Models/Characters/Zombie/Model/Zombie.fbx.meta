@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 544ec6526ecc830469d845ab599195a1
+guid: 5d93566524c090d48987abdf525901fe
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -38,9 +38,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: zombie_skeleton|walk (1)
-      takeName: zombie_skeleton|walk
-      internalID: -4400671048376938363
+      name: 01_stun
+      takeName: zombie_skeleton|01_stun
+      internalID: -2525310902347390800
       firstFrame: 0
       lastFrame: 59
       wrapMode: 0
@@ -49,7 +49,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -67,9 +67,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: zombie_skeleton|diging
-      takeName: zombie_skeleton|diging
-      internalID: 2999224159564948549
+      name: 02_walk
+      takeName: zombie_skeleton|02_walk
+      internalID: -4178835053080434840
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 03_attack
+      takeName: zombie_skeleton|03_attack
+      internalID: -5287702446970762366
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -96,11 +125,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: zombie_skeleton|stun
-      takeName: zombie_skeleton|stun
-      internalID: 4178702914083727353
+      name: 04_diging
+      takeName: zombie_skeleton|04_diging
+      internalID: -3349223239486606802
       firstFrame: 0
-      lastFrame: 59
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: 05_damage
+      takeName: zombie_skeleton|05_damage
+      internalID: -4114959422413456437
+      firstFrame: 0
+      lastFrame: 34
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -125,11 +183,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: zombie_skeleton|walk
-      takeName: zombie_skeleton|walk
-      internalID: -4575414511958234643
+      name: 06_death
+      takeName: zombie_skeleton|05_death
+      internalID: 5800046397191428389
       firstFrame: 0
-      lastFrame: 59
+      lastFrame: 14
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -220,7 +278,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

@@ -468,7 +468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 56.758, y: -0.413, z: -0.03}
+  m_LocalEulerAnglesHint: {x: 30, y: -0.413, z: -0.001}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2085,6 +2085,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2752015366843645139, guid: fe01c6c1a1699cd4abc14dfa3d052741,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.58
       objectReference: {fileID: 0}
     - target: {fileID: 4986700548247110943, guid: fe01c6c1a1699cd4abc14dfa3d052741,
         type: 3}
