@@ -45,28 +45,13 @@ public class GameControl : MonoBehaviour
 
     private void Update()
     {
-        if (colldown)
-        {
-            if (_cooldownTimer <= 0)
-            {
-                _cooldownTimer = _cooldownTime;
-                colldown = false;
-            } else
-            {
-                _cooldownTimer -= Time.deltaTime;
-                Debug.Log("aaaaaaaaaa");
-                return;
-            }
-        }
 
         if (_setNewWave)
         {   
 
-            
-            
-
             if (_newWaveTimer <= 0)
             {
+                Debug.Log("aaaaaaaaaa");
                 _newWaveTimer = _newWaveTime;
                 _setNewWave = false;
                 SetNewWave();
@@ -74,6 +59,21 @@ public class GameControl : MonoBehaviour
             } else
             {
                 _newWaveTimer -= Time.deltaTime;
+            }
+        }
+
+        if (colldown)
+        {
+            if (_cooldownTimer <= 0)
+            {
+                _cooldownTimer = _cooldownTime;
+                colldown = false;
+            }
+            else
+            {
+                _cooldownTimer -= Time.deltaTime;
+
+                return;
             }
         }
 
@@ -87,7 +87,7 @@ public class GameControl : MonoBehaviour
 
     private void SetNewWave()
     {
-        Debug.Log("sasa");
+        //Debug.Log("sasa");
         Waves[index].SetActive(true);
         _currentGameState = GameState.Fighting;
         index++;
@@ -104,7 +104,6 @@ public class GameControl : MonoBehaviour
 
         }
         _setNewWave = true;
-        _currentGameState = GameState.Waiting;
     }
 
     public bool IsFighting()
