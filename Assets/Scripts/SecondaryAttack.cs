@@ -5,6 +5,7 @@ using UnityEngine;
 public class SecondaryAttack : CombatSystem
 {
     [SerializeField] private float _damage;
+    [SerializeField] private float _attackStun;
     [SerializeField] private int _attackHitAmount;
     [SerializeField] private float _pauseBetweenHits;
     private bool _isAttackPerfoming = false;
@@ -98,6 +99,6 @@ public class SecondaryAttack : CombatSystem
 
     private void ExexuteAttack(GameObject target)
     {
-        DamageSender.SendDamage(target, _damage);
+        DamageSender.SendDamage(target, _damage, _attackStun);
     }
 }

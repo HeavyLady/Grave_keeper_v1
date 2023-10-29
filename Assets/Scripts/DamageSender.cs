@@ -5,12 +5,16 @@ using UnityEngine;
 public static class DamageSender
 {
     
-    public static void SendDamage(GameObject damageReceiverObj, float damage)
+    public static void SendDamage(GameObject damageReceiverObj, float damage, float stunCoeffiient)
     {
-        Enemy damageReceiverClass;
-        if (damageReceiverObj.TryGetComponent<Enemy>(out damageReceiverClass))
+        if (damageReceiverObj.TryGetComponent<Enemy>(out Enemy damageReceiverEnemyClass))
         {
-            damageReceiverClass.RecieveDamage(damage);
+            damageReceiverEnemyClass.RecieveDamage(damage, stunCoeffiient);
+
+        }
+        else if (damageReceiverObj.TryGetComponent<Player>(out Player damageReceiverPlayerClass))
+        {
+            damageReceiverPlayerClass.RecieveDamage(damage, stunCoeffiient);
         }
     }
 

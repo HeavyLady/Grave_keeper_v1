@@ -5,6 +5,7 @@ using UnityEngine;
 public class EscapeAttack : CombatSystem
 {
     [SerializeField] private float _damage;
+    [SerializeField] private float _attackStun;
     private bool _isAttackPerfoming = false;
     private float _attackTimer = 0;
 
@@ -63,6 +64,6 @@ public class EscapeAttack : CombatSystem
 
     private void ExexuteAttack(GameObject target)
     {
-        DamageSender.SendDamage(target, _damage);
+        DamageSender.SendDamage(target, _damage, _attackStun);
     }
 }

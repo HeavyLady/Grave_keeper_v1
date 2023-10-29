@@ -12,7 +12,7 @@ public class CombatSystem : MonoBehaviour
     protected PlayerInput PlayerInput;
     protected PlayerMovement PlayerMovement;
 
-    public event Action<Vector3> OnAttackExecute;
+    //public event Action<Vector3> OnAttackExecute;
 
 
     protected const string ENEMY_TAG = "Enemy";

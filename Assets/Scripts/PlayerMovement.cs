@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
+     private float _maxSpeed;
     [SerializeField] private AnimationCurve _stopSmoth;
     private float easeTimer = 0f;
     private Vector3 _previousDirection = Vector3.zero;
@@ -47,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerInput = GetComponent<PlayerInput>();
         CharacterController = GetComponent<CharacterController>();
         _currentMoveState = PlayerMoveState.Idle;
+        _maxSpeed = _moveSpeed;
     }
 
     private void Start()
@@ -66,7 +68,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
+        if (_moveSpeed > _maxSpeed)
+        {
+            _moveSpeed = _maxSpeed;
+        } else if (_moveSpeed < _maxSpeed)
+        {
+            _moveSpeed += (Time.deltaTime * 2f);
+        }
+
         CalculateDashCooldown();
         if (_currentMoveState != PlayerMoveState.Dashing) {
             Move();
@@ -189,7 +199,10 @@ public class PlayerMovement : MonoBehaviour
     {
         _attackTime = _attackTimer = attackTime;
         RotateToMousePosition(mousePosition);
+    }
 
-
+    public void ReactOnDamage(float stunCoefficient)
+    {
+        _moveSpeed *= stunCoefficient;
     }
 }
