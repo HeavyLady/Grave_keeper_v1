@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _hp;
+    [SerializeField] private GameObject _deadVisual;
+    [SerializeField] private GameObject _aliveVisual;
+    [SerializeField] private GameObject _player;
+    private NavMeshAgent _agent;
 
     private enum EnemyState
     {
@@ -16,11 +21,20 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _currentEnemyState = EnemyState.Alive;
+        _agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Update()
+    {
+        _agent.SetDestination(_player.transform.position);
     }
 
     public void RecieveDamage(float damage)
-    {
-        TakeDamage(damage);
+    {   
+        if (_currentEnemyState == EnemyState.Alive)
+        {
+            TakeDamage(damage);
+        }
     }
 
     private void TakeDamage(float damage)
@@ -40,7 +54,8 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         _currentEnemyState = EnemyState.Dead;
-        gameObject.SetActive(false);
+        _deadVisual.SetActive(true);
+        _aliveVisual.SetActive(false);
     }
 
 }
