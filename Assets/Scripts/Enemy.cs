@@ -17,6 +17,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _damage;
     [SerializeField] private float _attackStun;
 
+    [SerializeField] private AudioClip _damageClip;
+    [SerializeField] private AudioClip _metalClip;
+    [SerializeField] private AudioClip _dieClip;
+
+    private Animator _animator;
+
     private float updateDestinationTime = .5f;
     private float updateDestinationTimer;    
     
@@ -31,6 +37,9 @@ public class Enemy : MonoBehaviour
     private float digginTimer;
 
     private float attackDistance = 3f;
+
+    private CapsuleCollider _aliveCollider;
+    private BoxCollider _deadCollider;
 
     private NavMeshAgent _agent;
 
@@ -47,12 +56,23 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
+        GameControl.Instance._aliveEnemies++;
+
         if (_player == null)
         {
             _player = FindAnyObjectByType<Player>().gameObject;
-            Debug.Log("Sas");
         }
 
+
+
+        _aliveCollider = GetComponent<CapsuleCollider>();
+        _deadCollider = GetComponent<BoxCollider>();
+
+        _aliveCollider.enabled = true;
+        _deadCollider.enabled = false;
+
+        _animator = GetComponentInChildren<Animator>();
+        
         _currentEnemyState = EnemyState.Alive;
         _agent = GetComponent<NavMeshAgent>();
         AttackCollider.OnAttackCollided += AttackCollider_OnAttackCollided;
@@ -145,7 +165,7 @@ public class Enemy : MonoBehaviour
         _clostestGrave.SpawnNewEnemy();
         _graveList.Remove(_clostestGrave);
         _clostestGrave = GetClosestGraveFromList();
-
+        _animator.SetBool("Digging", false);
         if (_clostestGrave != null)
         {
             _agent.SetDestination(_clostestGrave.transform.position);
@@ -159,7 +179,9 @@ public class Enemy : MonoBehaviour
     {
         isDigging = true;
         digginTimer = diggingTime;
-        
+        _animator.SetBool("Digging", true);
+
+
     }
 
     private Grave GetClosestGraveFromList()
@@ -226,6 +248,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void ReciveDig()
+    {
+        Destroy(gameObject);
+    }
+
     private void TakeDamage(float damage)
     {
         _hp -= damage;
@@ -242,10 +269,14 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        GameControl.Instance._aliveEnemies--;
+        AudioSource.PlayClipAtPoint(_dieClip, transform.position);
         _currentEnemyState = EnemyState.Dead;
-        _deadVisual.SetActive(true);
-        _aliveVisual.SetActive(false);
         _agent.isStopped = true;
+        _animator.SetTrigger("Death");
+        _animator.SetBool("Digging", false);
+        _aliveCollider.enabled = false;
+        _deadCollider.enabled = true;
     }
 
     private void Attack()
@@ -256,6 +287,7 @@ public class Enemy : MonoBehaviour
             _agent.isStopped = true;
             transform.LookAt(_player.transform.position);
             ActivateAttackCollider();
+            _animator.SetTrigger("Attack");
             isAttacking = true;
             attackTimer = attackTime;
         }
@@ -283,6 +315,9 @@ public class Enemy : MonoBehaviour
     private void ReactOnDamage(float stunCoefficient)
     {
         _moveSpeed *= stunCoefficient;
+        AudioSource.PlayClipAtPoint(_damageClip, transform.position);
+        AudioSource.PlayClipAtPoint(_metalClip, transform.position);
+        _animator.SetTrigger("Hit");
     }
 
 }

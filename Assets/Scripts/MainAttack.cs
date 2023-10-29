@@ -8,6 +8,9 @@ public class MainAttack : CombatSystem
     [SerializeField] private float _attackStun;
     private bool _isAttackPerfoming = false;
     private float _attackTimer = 0;
+    private Player Player;
+
+
 
 
     
@@ -17,6 +20,7 @@ public class MainAttack : CombatSystem
     {
         PlayerInput.OnMainAttackPressed += PlayerInput_OnMainAttackPressed;
         AttackCollider.OnAttackCollided += AttackCollider_OnAttackCollided;
+        Player = GetComponent<Player>();
 
 
         DeactivateAttackCollider();
@@ -45,8 +49,14 @@ public class MainAttack : CombatSystem
     }
 
     private void PlayerInput_OnMainAttackPressed()
-    {
-        ActivateAttack();
+    {   
+        if (!GameControl.Instance.IsFighting())
+        {
+            ActivateDig();
+        } else
+        {
+            ActivateAttack();
+        }
     }
     private void AttackCollider_OnAttackCollided(Collider collider)
     {
@@ -55,19 +65,41 @@ public class MainAttack : CombatSystem
         }
     }
 
+    private void ActivateDig()
+    {
+
+        _isAttackPerfoming = true;
+        _attackTimer = _hitTime;
+        Player._animator.SetTrigger("Digging");
+        ActivateAttackCollider();
+        PlayerMovement.RactOnAttack(GetMousePosition(), _hitTime);
+    }
+
     protected override void ActivateAttack()
     {
         
         _isAttackPerfoming = true;
         _attackTimer = _hitTime;
+        Player._animator.SetTrigger("MainAttack");
         ActivateAttackCollider();
         PlayerMovement.RactOnAttack(GetMousePosition(), _hitTime);
 
 
     }
 
+
+
     private void ExexuteAttack(GameObject target)
     {
-        DamageSender.SendDamage(target, _damage, _attackStun);
+        if (!GameControl.Instance.IsFighting())
+        {
+            DamageSender.SendDig(target);
+            
+        }
+        else
+        {
+            DamageSender.SendDamage(target, _damage, _attackStun);
+        }
+        
     }
 }

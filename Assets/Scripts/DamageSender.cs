@@ -18,4 +18,13 @@ public static class DamageSender
         }
     }
 
+    public static void SendDig(GameObject damageReceiverObj)
+    {
+        if (damageReceiverObj.TryGetComponent<Enemy>(out Enemy damageReceiverEnemyClass))
+        {
+            damageReceiverEnemyClass.ReciveDig();
+
+        }
+    }
+
 }

@@ -42,11 +42,13 @@ public class PlayerMovement : MonoBehaviour
 
     private PlayerInput PlayerInput;
     private CharacterController CharacterController;
+    private Player Player;
 
     private void Awake()
     {
         PlayerInput = GetComponent<PlayerInput>();
         CharacterController = GetComponent<CharacterController>();
+        Player = GetComponent<Player>();
         _currentMoveState = PlayerMoveState.Idle;
         _maxSpeed = _moveSpeed;
     }
@@ -69,6 +71,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {   
+
+
         if (_moveSpeed > _maxSpeed)
         {
             _moveSpeed = _maxSpeed;
@@ -109,6 +113,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         Vector3 targetPosition = _previousDirection * _moveSpeed * Time.deltaTime;
+
+        if (targetPosition * _stopSmoth.Evaluate(easeTimer) != Vector3.zero && !Player._animator.GetBool("Walk"))
+        {
+            Player._animator.SetBool("Walk", true);
+        }
+        else if (targetPosition * _stopSmoth.Evaluate(easeTimer) == Vector3.zero && Player._animator.GetBool("Walk"))
+        {
+            Player._animator.SetBool("Walk", false);
+        }
 
         CharacterController.Move(targetPosition * _stopSmoth.Evaluate(easeTimer));
     }
